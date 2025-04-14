@@ -1,3 +1,4 @@
+from sre_parse import State
 import tkinter as tk
 from tkinter import scrolledtext
 import socket
@@ -27,7 +28,7 @@ def receive_messages(sock, client_id, text_area):
             text_area.insert(tk.END, f"Erro: {str(e)}\n")
             break
 
-def send_message(sock, client_id, entry):
+def send_message(sock, client_id, entry, text_area):
     global conversation_id
     global receiver_id
     
@@ -124,7 +125,6 @@ def start_chat():
 window = tk.Tk()
 window.title("Bat Papo")
 window.geometry("1000x800")
-window.iconbitmap('bat-with-sharp-wings-silhouette.ico')
 
 # Área de texto para exibir mensagens
 frame = tk.Frame(window)
@@ -133,7 +133,7 @@ frame.pack(fill=tk.BOTH, expand=True)
 client_id_label = tk.Label(frame, font=('Arial', 12))
 client_id_label.pack(pady=5)
 
-text_area = scrolledtext.ScrolledText(frame, wrap=tk.WORD)
+text_area = scrolledtext.ScrolledText(frame, wrap=tk.WORD, state='disabled')
 text_area.pack(fill=tk.BOTH, expand=True)
 
 text_area.insert(tk.END, "Enter command ('/list' to see clients, '/connect <client_id>' to start conversation, '/exit' to leave conversation, 'exit' to quit): \n")
