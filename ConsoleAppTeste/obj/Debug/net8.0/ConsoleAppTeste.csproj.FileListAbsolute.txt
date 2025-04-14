@@ -1,0 +1,42 @@
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.exe
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.deps.json
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.runtimeconfig.json
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.pdb
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfoInputs.cache
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfo.cs
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.csproj.CoreCompileInputs.cache
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\refint\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.pdb
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.genruntimeconfig.cache
+D:\Projetos de Programação!!!\Projetos Dados\servidor_chat\ConsoleAppTeste\obj\Debug\net8.0\ref\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.exe
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.deps.json
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.runtimeconfig.json
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.pdb
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfoInputs.cache
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfo.cs
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.csproj.CoreCompileInputs.cache
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\refint\ConsoleAppTeste.dll
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.pdb
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.genruntimeconfig.cache
+D:\Projetos de Programação!!!\Projetos Dados\ServidorCliente_chat_TCP\ConsoleAppTeste\obj\Debug\net8.0\ref\ConsoleAppTeste.dll
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.exe
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.deps.json
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.runtimeconfig.json
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.dll
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.pdb
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfoInputs.cache
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfo.cs
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.csproj.CoreCompileInputs.cache
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.dll
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\refint\ConsoleAppTeste.dll
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.pdb
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.genruntimeconfig.cache
+C:\Users\Felipe\OneDrive\Documentos\E.C.-UFU\2024-2\sd\ChatTestTCP-main\ConsoleAppTeste\obj\Debug\net8.0\ref\ConsoleAppTeste.dll
