@@ -13,6 +13,7 @@ from PyQt5.QtCore import pyqtSignal, QObject, QTimer
 class Communicator(QObject):
     message_received = pyqtSignal(str)
     client_id_received = pyqtSignal(str)
+    clients_list_received = pyqtSignal(list)
 
 class ChatClient(QWidget):
     def __init__(self):
@@ -20,7 +21,7 @@ class ChatClient(QWidget):
         self.comm = Communicator()
         self.comm.message_received.connect(self.append_message)
         self.comm.client_id_received.connect(self.set_client_id)
-        self.comm.clients_list_received = pyqtSignal(list) # atualizar lista de clientes
+        self.comm.clients_list_received.connect(self.update_clients_list)
 
         self.client_socket = None
         self.client_id = None
@@ -30,11 +31,7 @@ class ChatClient(QWidget):
 
         self.init_ui()
 
-        # Timer para atualizar lista de clientes
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.request_clients_list)
-        self.timer.start(5000)  # 5 segundos
-        
+        # Inicia a thread de conexão depois que a UI estiver pronta
         threading.Thread(target=self.start_chat, daemon=True).start()
 
     def init_ui(self):
@@ -45,6 +42,12 @@ class ChatClient(QWidget):
 
         # Barra lateral esquerda
         self.sidebar = QVBoxLayout()
+        
+        # Título da barra lateral
+        self.sidebar_title = QLabel("Clientes Online")
+        self.sidebar_title.setStyleSheet("font-weight: bold; font-size: 14px;")
+        self.sidebar.addWidget(self.sidebar_title)
+        
         self.sidebar_widget = QWidget()
         self.sidebar_widget.setLayout(self.sidebar)
         self.sidebar_scroll = QScrollArea()
@@ -57,15 +60,15 @@ class ChatClient(QWidget):
         self.client_id_label = QLabel("Meu ID: ")
         center_layout.addWidget(self.client_id_label)
 
-        # Área de mensagens por conversa
-        self.stacked_messages = QVBoxLayout()
-        self.message_frame = QFrame()
-        self.message_frame.setLayout(self.stacked_messages)
-        center_layout.addWidget(self.message_frame, 10)
+        # Área de mensagens
+        self.messages_area = QTextEdit()
+        self.messages_area.setReadOnly(True)
+        center_layout.addWidget(self.messages_area, 10)
 
         # Área de entrada
         entry_layout = QHBoxLayout()
         self.entry = QLineEdit()
+        self.entry.setPlaceholderText("Digite sua mensagem...")
         entry_layout.addWidget(self.entry)
         self.send_button = QPushButton('Enviar')
         self.send_button.clicked.connect(self.send_message)
@@ -77,19 +80,34 @@ class ChatClient(QWidget):
 
         self.entry.returnPressed.connect(self.send_message)
 
+        # Adiciona a área geral ao dicionário
+        self.chat_areas["geral"] = self.messages_area
+
     def request_clients_list(self):
-        if self.client_socket:
+        if self.client_socket and self.client_id:
             try:
-                self.client_socket.send(json.dumps({"SenderId": self.client_id, "Content": "/list"}).encode())
+                message = {
+                    "SenderId": int(self.client_id),
+                    "ReceiverId": 0,  # Servidor
+                    "Content": "/list",
+                    "Timestamp": None,  # O servidor vai ignorar este campo
+                    "ConversationId": 0
+                }
+                self.client_socket.send(json.dumps(message).encode())
             except Exception as e:
-                pass
+                self.messages_area.append(f"[Erro ao solicitar lista de clientes]: {e}")
     
     def update_clients_list(self, clients):
-        # Limpa sidebar
+        # Remove todos os botões de cliente (mantendo o título)
         for i in reversed(range(self.sidebar.count())):
             widget = self.sidebar.itemAt(i).widget()
-            if widget:
+            if widget and widget != self.sidebar_title:
                 widget.setParent(None)
+        
+        # Adiciona o título novamente se foi removido
+        if self.sidebar.indexOf(self.sidebar_title) == -1:
+            self.sidebar.addWidget(self.sidebar_title)
+        
         # Adiciona botões para cada cliente
         for client_id in clients:
             if str(client_id) == str(self.client_id):
@@ -101,90 +119,152 @@ class ChatClient(QWidget):
     def connect_to_client(self, client_id):
         # Envia comando de conexão
         if self.client_socket:
-            self.client_socket.send(json.dumps({"SenderId": self.client_id, "Content": f"/connect {client_id}"}).encode())
-        # Troca área de mensagens
-        if client_id not in self.chat_areas:
-            area = QTextEdit()
-            area.setReadOnly(True)
-            self.chat_areas[client_id] = area
-            self.stacked_messages.addWidget(area)
-        # Esconde todas as áreas e mostra só a do cliente selecionado
-        for cid, area in self.chat_areas.items():
-            area.setVisible(cid == client_id)
+            message = {
+                "SenderId": int(self.client_id),
+                "ReceiverId": 0,  # Servidor
+                "Content": f"/connect {client_id}",
+                "Timestamp": None,
+                "ConversationId": 0
+            }
+            self.client_socket.send(json.dumps(message).encode())
+            self.messages_area.append(f"[Sistema] Conectando com Cliente {client_id}...")
+        
         self.current_chat_id = client_id
 
     def append_message(self, message):
-        # Exibe mensagem na área da conversa atual
-        if self.current_chat_id and self.current_chat_id in self.chat_areas:
-            self.chat_areas[self.current_chat_id].append(message)
-        else:
-            # Mensagem geral (sem conversa ativa)
-            if "geral" not in self.chat_areas:
-                area = QTextEdit()
-                area.setReadOnly(True)
-                self.chat_areas["geral"] = area
-                self.stacked_messages.addWidget(area)
-            self.chat_areas["geral"].append(message)
+        self.messages_area.append(message)
 
     def set_client_id(self, client_id):
+        self.client_id = client_id
         self.client_id_label.setText(f"Meu ID: {client_id}")
+        
+        # Configura o timer para atualizar a lista de clientes periodicamente
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.request_clients_list)
+        self.timer.start(5000)  # 5 segundos
+        
+        # Configura o timer para enviar heartbeat periodicamente
+        self.heartbeat_timer = QTimer()
+        self.heartbeat_timer.timeout.connect(self.send_heartbeat)
+        self.heartbeat_timer.start(15000)  # 15 segundos
+        
+        # Solicita lista de clientes imediatamente
+        self.request_clients_list()
+
+    def send_heartbeat(self):
+        if self.client_socket and self.client_id:
+            try:
+                message = {
+                    "SenderId": int(self.client_id),
+                    "ReceiverId": 0,  # Servidor
+                    "Content": "heartbeat",
+                    "Timestamp": None,
+                    "ConversationId": 0
+                }
+                self.client_socket.send(json.dumps(message).encode())
+            except Exception as e:
+                self.messages_area.append(f"[Erro ao enviar heartbeat]: {e}")
 
     def send_message(self):
-        message = self.entry.text()
-        if message and self.client_socket:
+        message_text = self.entry.text().strip()
+        if not message_text:
+            return
+            
+        if message_text == "/list":
+            self.request_clients_list()
+            self.entry.clear()
+            return
+        elif message_text.startswith("/connect"):
+            parts = message_text.split()
+            if len(parts) == 2 and parts[1].isdigit():
+                self.connect_to_client(parts[1])
+            else:
+                self.messages_area.append("[Sistema] Uso: /connect <id_cliente>")
+            self.entry.clear()
+            return
+        elif message_text == "/exit":
+            if self.current_chat_id:
+                message = {
+                    "SenderId": int(self.client_id),
+                    "ReceiverId": 0,  # Servidor
+                    "Content": "/exit",
+                    "Timestamp": None,
+                    "ConversationId": 0
+                }
+                self.client_socket.send(json.dumps(message).encode())
+                old_chat = self.current_chat_id
+                self.current_chat_id = None
+                self.messages_area.append(f"[Sistema] Saiu da conversa com Cliente {old_chat}")
+            self.entry.clear()
+            return
+        elif self.client_socket:
             try:
                 data = {
-                    "SenderId": self.client_id,
-                    "Content": message
+                    "SenderId": int(self.client_id),
+                    "ReceiverId": int(self.current_chat_id) if self.current_chat_id else 0,
+                    "Content": message_text,
+                    "Timestamp": None,  # O servidor vai preencher
+                    "ConversationId": int(self.current_chat_id) if self.current_chat_id else 0
                 }
-                self.client_socket.send(json.dumps(data).encode())
-                self.comm.message_received.emit(f"Você: {message}")
+                
+                if self.current_chat_id:
+                    self.client_socket.send(json.dumps(data).encode())
+                    self.messages_area.append(f"Você para Cliente {self.current_chat_id}: {message_text}")
+                else:
+                    self.messages_area.append("[Sistema] Você precisa conectar com um cliente primeiro usando /connect <id_cliente>")
+                
                 self.entry.clear()
             except Exception as e:
-                self.comm.message_received.emit(f"[Erro ao enviar]: {e}")
+                self.messages_area.append(f"[Erro ao enviar]: {e}")
 
     def receive_messages(self):
         while True:
             try:
                 message = self.client_socket.recv(4096).decode()
                 if not message:
+                    self.comm.message_received.emit("[Sistema] Desconectado do servidor.")
                     break
 
-                # Detecta se é a lista de clientes ativos
-                if message.startswith("Active clients:"):
-                    # Extrai os IDs dos clientes usando regex
-                    client_ids = []
-                    for line in message.splitlines()[1:]:
-                        match = re.match(r"ID:\s*(\d+)", line)
-                        if match:
-                            client_ids.append(match.group(1))
-                    self.update_clients_list(client_ids)
-                    continue
-
-                # Detecta se é uma mensagem de sistema com o ID do cliente
+                # Tenta processar como JSON
                 try:
                     data = json.loads(message)
-                    if 'Content' in data and 'Your assigned client ID is' in data['Content']:
-                        self.client_id = data['ReceiverId']
-                        self.comm.client_id_received.emit(str(self.client_id))
+                    
+                    # Verifica se é a resposta do comando /list
+                    if data.get("SenderId") == 0 and "Active clients:" in data.get("Content", ""):
+                        client_ids = []
+                        for line in data["Content"].splitlines()[1:]:  # Pular a primeira linha (título)
+                            match = re.match(r"ID:\s*(\d+)", line)
+                            if match:
+                                client_ids.append(match.group(1))
+                        
+                        # Emitir sinal para atualizar lista de clientes
+                        self.comm.clients_list_received.emit(client_ids)
                         continue
-                    # Mensagem normal de chat
-                    sender = data.get("SenderId", "Outro")
+                    
+                    # Verifica se é uma mensagem sobre ID do cliente
+                    if "Your assigned client ID is" in data.get("Content", ""):
+                        client_id = data.get("ReceiverId")
+                        if client_id:
+                            self.comm.client_id_received.emit(str(client_id))
+                        continue
+                    
+                    # Envia mensagem periódica para manter conexão ativa (heartbeat)
+                    if data.get("SenderId") == 0 and data.get("Content") == "Message delivered.":
+                        # Não mostra os confirmations de entrega
+                        continue
+                    
+                    # Mensagem normal de um cliente ou do servidor
+                    sender_id = data.get("SenderId", "Desconhecido")
                     content = data.get("Content", "")
-                    # Direciona para a área da conversa correta
-                    if sender not in self.chat_areas:
-                        area = QTextEdit()
-                        area.setReadOnly(True)
-                        self.chat_areas[sender] = area
-                        self.stacked_messages.addWidget(area)
-                    self.chat_areas[sender].append(f"{sender}: {content}")
-                    # Se estiver conversando com esse cliente, mostra a área
-                    if self.current_chat_id == sender:
-                        for cid, area in self.chat_areas.items():
-                            area.setVisible(cid == sender)
-                except Exception:
-                    # Caso a mensagem não seja JSON (mensagem de sistema/texto puro)
+                    sender_name = "Servidor" if sender_id == 0 else f"Cliente {sender_id}"
+                    
+                    # Mostrar mensagem na área principal
+                    self.comm.message_received.emit(f"{sender_name}: {content}")
+                    
+                except json.JSONDecodeError:
+                    # Mensagem não é JSON (provavelmente texto puro do sistema)
                     self.comm.message_received.emit(message)
+                    
             except Exception as e:
                 self.comm.message_received.emit(f"[Erro ao receber]: {e}")
                 break
@@ -192,20 +272,17 @@ class ChatClient(QWidget):
     def start_chat(self):
         HOST = '127.0.0.1'
         PORT = 8888
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect((HOST, PORT))
-
-        # Recebe o ID do cliente
-        while True:
-            message = self.client_socket.recv(1024).decode()
-            data = json.loads(message)
-            if 'Content' in data and 'Your assigned client ID is' in data['Content']:
-                self.client_id = data['ReceiverId']
-                self.comm.client_id_received.emit(str(self.client_id))
-                break
-
-        # Inicia thread para receber mensagens
-        threading.Thread(target=self.receive_messages, daemon=True).start()
+        
+        try:
+            self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.client_socket.connect((HOST, PORT))
+            self.comm.message_received.emit(f"[Sistema] Conectado ao servidor {HOST}:{PORT}")
+            
+            # Inicia thread para receber mensagens
+            threading.Thread(target=self.receive_messages, daemon=True).start()
+            
+        except Exception as e:
+            self.comm.message_received.emit(f"[Erro ao conectar]: {e}")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
