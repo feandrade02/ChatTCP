@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
     QPushButton, QLabel, QScrollArea, QFrame
 )
 from PyQt5.QtCore import pyqtSignal, QObject, QTimer
+import time
 
 # Classe para sinais customizados (para thread-safe UI updates)
 class Communicator(QObject):
@@ -87,7 +88,7 @@ class ChatClient(QWidget):
         if self.client_socket and self.client_id:
             try:
                 message = {
-                    "SenderId": int(self.client_id),
+                    "SenderId": self.safe_int_conversion(self.client_id),
                     "ReceiverId": 0,  # Servidor
                     "Content": "/list",
                     "Timestamp": None,  # O servidor vai ignorar este campo
@@ -120,7 +121,7 @@ class ChatClient(QWidget):
         # Envia comando de conexão
         if self.client_socket:
             message = {
-                "SenderId": int(self.client_id),
+                "SenderId": self.safe_int_conversion(self.client_id),
                 "ReceiverId": 0,  # Servidor
                 "Content": f"/connect {client_id}",
                 "Timestamp": None,
@@ -155,7 +156,7 @@ class ChatClient(QWidget):
         if self.client_socket and self.client_id:
             try:
                 message = {
-                    "SenderId": int(self.client_id),
+                    "SenderId": self.safe_int_conversion(self.client_id),
                     "ReceiverId": 0,  # Servidor
                     "Content": "heartbeat",
                     "Timestamp": None,
@@ -185,7 +186,7 @@ class ChatClient(QWidget):
         elif message_text == "/exit":
             if self.current_chat_id:
                 message = {
-                    "SenderId": int(self.client_id),
+                    "SenderId": self.safe_int_conversion(self.client_id),
                     "ReceiverId": 0,  # Servidor
                     "Content": "/exit",
                     "Timestamp": None,
@@ -200,11 +201,11 @@ class ChatClient(QWidget):
         elif self.client_socket:
             try:
                 data = {
-                    "SenderId": int(self.client_id),
-                    "ReceiverId": int(self.current_chat_id) if self.current_chat_id else 0,
+                    "SenderId": self.safe_int_conversion(self.client_id),
+                    "ReceiverId": self.safe_int_conversion(self.current_chat_id) if self.current_chat_id else 0,
                     "Content": message_text,
-                    "Timestamp": None,  # O servidor vai preencher
-                    "ConversationId": int(self.current_chat_id) if self.current_chat_id else 0
+                    "Timestamp": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()),
+                    "ConversationId": self.safe_int_conversion(self.current_chat_id) if self.current_chat_id else 0
                 }
                 
                 if self.current_chat_id:
@@ -283,6 +284,14 @@ class ChatClient(QWidget):
             
         except Exception as e:
             self.comm.message_received.emit(f"[Erro ao conectar]: {e}")
+
+    def safe_int_conversion(self, value, default=0):
+        try:
+            if value is None:
+                return default
+            return int(value)
+        except (ValueError, TypeError):
+            return default
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

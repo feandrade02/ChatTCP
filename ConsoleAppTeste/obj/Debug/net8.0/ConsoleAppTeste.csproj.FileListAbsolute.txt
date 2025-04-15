@@ -55,3 +55,18 @@ D:\Projetos de Programação!!!\Projetos Engenharia\chatss\ChatTCP\ConsoleAppTes
 D:\Projetos de Programação!!!\Projetos Engenharia\chatss\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.pdb
 D:\Projetos de Programação!!!\Projetos Engenharia\chatss\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.genruntimeconfig.cache
 D:\Projetos de Programação!!!\Projetos Engenharia\chatss\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ref\ConsoleAppTeste.dll
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.exe
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.deps.json
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.runtimeconfig.json
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.dll
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\bin\Debug\net8.0\ConsoleAppTeste.pdb
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfoInputs.cache
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.AssemblyInfo.cs
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.csproj.CoreCompileInputs.cache
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.sourcelink.json
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.dll
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\refint\ConsoleAppTeste.dll
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.pdb
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ConsoleAppTeste.genruntimeconfig.cache
+C:\Projetos Pessoais\SD\ChatTCP\ConsoleAppTeste\obj\Debug\net8.0\ref\ConsoleAppTeste.dll
